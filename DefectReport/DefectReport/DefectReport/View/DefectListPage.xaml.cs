@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,33 +7,35 @@ namespace DefectReport
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DefectListPage : ContentPage
     {
-        public ObservableCollection<string> Items { get; set; }
+        private DefectListViewModel viewModel;
 
         public DefectListPage()
         {
             InitializeComponent();
-
-            Items = new ObservableCollection<string>
-            {
-                "Item 1",
-                "Item 2",
-                "Item 3",
-                "Item 4",
-                "Item 5"
-            };
-
-            MyListView.ItemsSource = Items;
+            viewModel = new DefectListViewModel(this.Navigation);
+            this.BindingContext = viewModel;
         }
 
-        async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+        protected override async void OnAppearing()
         {
-            if (e.Item == null)
-                return;
+            base.OnAppearing();
 
-            await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
+            // Reset the 'resume' id, since we just want to re-start here
+            ((App)App.Current).ResumeAtDefectReportId = -1;
+            DefectHistory.ItemsSource = await App.Database.GetItemsAsync();
+        }
 
-            //Deselect Item
-            ((ListView)sender).SelectedItem = null;
+        //Should do this async//
+        async void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            viewModel.ViewDefect(e);
+            //viewModel.ViewDefect(e);
+            //if (e.SelectedItem != null)
+            //{
+            //    DefectReportItem selectedDefect = new DefectReportItem();
+            //    selectedDefect = e.SelectedItem as DefectReportItem;
+            //    await Navigation.PushAsync(new DefectEntryPage(selectedDefect));
+            //}
         }
     }
 }

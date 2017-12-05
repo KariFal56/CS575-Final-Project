@@ -1,14 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:DefectReport"
              x:Class="DefectReport.MainPage">
     <ContentPage.Content>
+        
         <StackLayout>
             <Label Text="Defect Report"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-            
+            <Label Text="Enter a work order:" />
+            <Entry Text="{Binding EnteredWorkOrder, Mode=TwoWay}" Keyboard = "Default" />
+            <Button x:Name="goButton" Text="Go" Command="{Binding NavigateEntryCommand}" />
+            <Button x:Name="goHistoryButton" Text="History" Command="{Binding NavigateHistoryCommand}" />
         </StackLayout>
+        
     </ContentPage.Content>
 </ContentPage>

@@ -12,9 +12,10 @@ namespace DefectReport
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DefectEntryPage : ContentPage
     {
-        public DefectEntryPage()
+        public DefectEntryPage(DefectReportItem newDefect)
         {
             InitializeComponent();
+            this.BindingContext = new DefectEntryViewModel(this.Navigation, newDefect); 
         }
     }
 }

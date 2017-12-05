@@ -3,17 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              x:Class="DefectReport.DefectEntryPage">
-    <ContentPage.Content>
-        
-        <StackLayout>
+
+    <ContentPage.Padding>
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="iOS" Value="20, 40, 20, 20" />
+                <On Platform="Android, WinPhone, Windows" Value="20" />
+            </OnPlatform>
+        </ContentPage.Padding>
+    
+        <ContentPage.Content>
+            <StackLayout>
             <Label Text="Defect Information"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-            <Entry Text="{Binding WorkOrderNumber, Mode=TwoWay}" ReadOnly ="true" />
-            <Entry Text="{Binding Count, Mode=TwoWay}" />
-            <Entry Text="{Binding Defect, Mode=TwoWay}" />
-            <Entry Text="{Binding Disposition, Mode=TwoWay}" />
-            <Entry Text="{Binding Date, Mode=TwoWay}" ReadOnly ="true" />
+            <Entry Text="{Binding WorkOrderNumber, Mode=OneWayToSource}" IsEnabled ="false" />
+            <Entry Text="{Binding Count, Mode=TwoWay}"  Keyboard = "Numeric" />
+            <Entry Text="{Binding Defect, Mode=TwoWay}"  Keyboard = "Default" />
+            <Entry Text="{Binding Disposition, Mode=TwoWay}" Keyboard = "Default"  />
+            <Entry Text="{Binding Date, Mode=OneWayToSource}" IsEnabled  ="false" />
             <Button x:Name="updateButton" Text="Create/Update" Command="{Binding UpdateCommand}" />
             <Button x:Name="deleteButton" Text="Delete" Command="{Binding DeleteCommand}" />
             <Button x:Name="cancelButton" Text="Cancel" Command="{Binding CancelCommand}" />

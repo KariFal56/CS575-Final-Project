@@ -39,6 +39,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\DataAccess.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="View\DefectEntryPage.xaml.cs">
       <DependentUpon>DefectEntryPage.xaml</DependentUpon>
     </Compile>

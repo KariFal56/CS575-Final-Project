@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using Xamarin.Forms;
 using System.Runtime.CompilerServices;
-using System.Diagnostics;
+using System.Collections.ObjectModel;
 
 namespace DefectReport
 {
@@ -10,7 +10,20 @@ namespace DefectReport
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //Add observablecollection for defect list?
+        private ObservableCollection<DefectReportItem> _defectReportList;
+        public ObservableCollection<DefectReportItem> DefectReportList
+        {
+            get
+            {
+                return _defectReportList;
+            }
+            set
+            {
+                if (Equals(value, _defectReportList)) return;
+                _defectReportList = value;
+                OnPropertyChanged(nameof(DefectReportList));
+            }
+        }
 
         //Navigation
         private INavigation navigation;
@@ -28,7 +41,7 @@ namespace DefectReport
                 else
                 {
                     _id = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Id));
                 }
             }
             get
@@ -59,18 +72,14 @@ namespace DefectReport
         public DefectListViewModel(INavigation _navigation)
         {
             navigation = _navigation;
-            Debug.WriteLine(LoadListTask());
+            DefectReportList = new ObservableCollection<DefectReportItem>();
+            GetDefectReports();
         }
 
-        private async Task<string> LoadListTask()
+        private async Task GetDefectReports()
         {
-            return await Task.Run(async () =>
-            {
-                // Reset the 'resume' id, since we just want to re-start here
-                ((App)App.Current).ResumeAtDefectReportId = -1;
-                await App.Database.GetItemsAsync(); 
-                return "Thanks for waiting";         //Update Text       
-            });
+            ((App)App.Current).ResumeAtDefectReportId = -1;
+            Extensions.AddRange(DefectReportList,(await App.Database.GetItemsAsync()));
         }
     }
 }

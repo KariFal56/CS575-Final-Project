@@ -77,19 +77,26 @@ namespace DefectReport
         public int Id { set; get; }  //This will not be changed here
         public string WorkOrderNumber { set; get; }  //ReadyOnly, can't be changed here
 
-        int _count;
+        int _count = 1;
         public int Count
         {
             set
             {
-                if (value.Equals(_count))
+                if (value != 0)
                 {
-                    return;
+                    if (value.Equals(_count))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        _count = value;
+                        OnPropertyChanged(nameof(Count));
+                    }
                 }
                 else
                 {
-                    _count = value;
-                    OnPropertyChanged();
+                    Count = _count;
                 }
             }
             get
@@ -103,14 +110,17 @@ namespace DefectReport
         {
             set
             {
-                if (value.Equals(_defect, StringComparison.Ordinal))
+                if (value != null)
                 {
-                    return;
-                }
-                else
-                {
-                    _defect = value;
-                    OnPropertyChanged();
+                    if (value.Equals(_defect, StringComparison.Ordinal))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        _defect = value;
+                        OnPropertyChanged(nameof(Defect));
+                    }
                 }
             }
             get
@@ -124,14 +134,17 @@ namespace DefectReport
         {
             set
             {
-                if (value.Equals(_disposition, StringComparison.Ordinal))
+                if (value != null)
                 {
-                    return;
-                }
-                else
-                {
-                    _disposition = value;
-                    OnPropertyChanged();
+                    if (value.Equals(_disposition, StringComparison.Ordinal))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        _disposition = value;
+                        OnPropertyChanged(nameof(Disposition));
+                    }
                 }
             }
             get
@@ -140,19 +153,26 @@ namespace DefectReport
             }
         }
 
-        DateTime _date;
+        DateTime _date = DateTime.Now;
         public DateTime Date
         {
             set
             {
-                if (value.Equals(_date))
+                if (value != null)
                 {
-                    return;
+                    if (value.Equals(_date))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        _date = value;
+                        OnPropertyChanged(nameof(Date));
+                    }
                 }
                 else
                 {
-                    _date = value;
-                    OnPropertyChanged();
+                    Date = _date;
                 }
             }
             get
@@ -178,6 +198,14 @@ namespace DefectReport
 
             //set passed model parameters
             WorkOrderNumber = newDefect.WorkOrderNumber;
+            if (newDefect.Id!=0)
+            {
+                Id = newDefect.Id;
+                Date = newDefect.Date;
+                Defect = newDefect.Defect;
+                Disposition = newDefect.Disposition;
+                Count = newDefect.Count;
+            }
 
         }
     }

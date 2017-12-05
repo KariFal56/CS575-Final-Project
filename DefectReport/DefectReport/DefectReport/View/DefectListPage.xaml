@@ -1,30 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              x:Class="DefectReport.DefectListPage">
-    
-    <ContentPage.ToolbarItems>
-        <!--<ToolbarItem Text="+" Clicked="OnItemAdded">
-        </ToolbarItem> -->
-    </ContentPage.ToolbarItems>
 
-    <ListView x:Name="DefectHistory"
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="20, 40, 20, 20" />
+            <On Platform="Android, WinPhone, Windows" Value="20" />
+        </OnPlatform>
+    </ContentPage.Padding>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ListView x:Name="DefectHistory"
             ItemsSource="{Binding DefectReportList}"
             ItemSelected="OnListItemSelected"
             CachingStrategy="RecycleElement">
-    
+
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout>
                             <Label Text="{Binding WorkOrderNumber}" 
-                   Style="{DynamicResource ListItemTextStyle}" />
+                                FontAttributes="Bold" />
                             <Label Text="{Binding Defect}" 
-                   Style="{DynamicResource ListItemDetailTextStyle}"/>
+                                FontAttributes="Bold" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
-  </ListView>
+        </ListView>
+    </Grid>
 </ContentPage>

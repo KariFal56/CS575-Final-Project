@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace DefectReport
@@ -7,7 +6,7 @@ namespace DefectReport
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DefectListPage : ContentPage
     {
-        private DefectListViewModel viewModel;
+        private DefectListViewModel viewModel;  
 
         public DefectListPage()
         {
@@ -16,26 +15,26 @@ namespace DefectReport
             this.BindingContext = viewModel;
         }
 
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
+        //protected override async void OnAppearing()
+        //{
+        //    base.OnAppearing();
 
             // Reset the 'resume' id, since we just want to re-start here
-            ((App)App.Current).ResumeAtDefectReportId = -1;
-            DefectHistory.ItemsSource = await App.Database.GetItemsAsync();
-        }
+            //((App)App.Current).ResumeAtDefectReportId = -1;
+            //DefectHistory.ItemsSource = await App.Database.GetItemsAsync();
+        //}
 
         //Should do this async//
+
         async void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            viewModel.ViewDefect(e);
             //viewModel.ViewDefect(e);
-            //if (e.SelectedItem != null)
-            //{
-            //    DefectReportItem selectedDefect = new DefectReportItem();
-            //    selectedDefect = e.SelectedItem as DefectReportItem;
-            //    await Navigation.PushAsync(new DefectEntryPage(selectedDefect));
-            //}
+            if (e.SelectedItem != null)
+            {
+                DefectReportItem selectedDefect = new DefectReportItem();
+                selectedDefect = e.SelectedItem as DefectReportItem;
+                await Navigation.PushAsync(new DefectEntryPage(selectedDefect));
+            }
         }
     }
 }

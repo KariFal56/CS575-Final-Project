@@ -15,6 +15,6 @@ namespace DefectReport
         public string Defect { get; set; }
         public string Disposition { get; set; }
         public DateTime Date { get; set; }
-        public bool UseDefect { get; set; }  //if defect should be used to generate quick select list - Default = True
+        //public bool UseDefect { get; set; }  //if defect should be used to generate quick select list - Default = True
     }
 }

@@ -38,7 +38,13 @@ namespace DefectReport
             {
                 return new Command(async () =>
                 {
-                    await navigation.PushAsync(new DefectEntryPage(WorkOrderItem));
+                    if (!string.IsNullOrWhiteSpace(EnteredWorkOrder) && EnteredWorkOrder.Length < 40)
+                    {
+                        WorkOrderItem = new DefectReportItem();
+                        WorkOrderItem.WorkOrderNumber = EnteredWorkOrder;
+
+                        await navigation.PushAsync(new DefectEntryPage(WorkOrderItem));
+                    }
                 });
             }
         }
@@ -46,25 +52,26 @@ namespace DefectReport
         //Work Order Information to pass to Defect Entry Page
         public DefectReportItem WorkOrderItem { get; set; }
 
-        string _enteredWorkOrderNumber;
+        string _enteredWorkOrderNumber="123456789";  //Set Default Value
         public string EnteredWorkOrder
         {
             set
             {
-                if (value.Equals(_enteredWorkOrderNumber, StringComparison.Ordinal))
+                if (value != null)
                 {
-                    return;
-                }
-               else
-                {
-                    if (!string.IsNullOrWhiteSpace(EnteredWorkOrder) && EnteredWorkOrder.Length < 40)
+                    if (value.Equals(_enteredWorkOrderNumber, StringComparison.Ordinal))
                     {
-                        WorkOrderItem = new DefectReportItem();
-                        WorkOrderItem.WorkOrderNumber = EnteredWorkOrder;
-        
-                        _enteredWorkOrderNumber = value;
-                        OnPropertyChanged();
+                        return;
                     }
+                    else
+                    {
+                        _enteredWorkOrderNumber = value;
+                        OnPropertyChanged(nameof(EnteredWorkOrder));
+                    }
+                }
+                else
+                {
+                    value = _enteredWorkOrderNumber;
                 }
             }
             get
@@ -86,12 +93,6 @@ namespace DefectReport
         {
             navigation = _navigation;
         }
-
-        public MainViewModel()
-        {
-
-        }
-
     }
 }
 

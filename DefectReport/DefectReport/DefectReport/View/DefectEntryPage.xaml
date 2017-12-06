@@ -16,11 +16,11 @@
             <Label Text="Defect Information"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-            <Entry Text="{Binding WorkOrderNumber, Mode=OneWayToSource}" IsEnabled ="false" />
-            <Entry Text="{Binding Count, Mode=TwoWay}"  Keyboard = "Numeric" />
-            <Entry Text="{Binding Defect, Mode=TwoWay}"  Keyboard = "Default" />
-            <Entry Text="{Binding Disposition, Mode=TwoWay}" Keyboard = "Default"  />
-            <Entry Text="{Binding Date, Mode=OneWayToSource}" IsEnabled  ="false" />
+            <Entry Text="{Binding WorkOrderNumber}" IsEnabled ="false" />
+            <Entry Text="{Binding Count}"  Keyboard = "Numeric" />
+            <Entry Text="{Binding Defect}"  Keyboard = "Default" />
+            <Entry Text="{Binding Disposition}" Keyboard = "Default"  />
+            <Entry Text="{Binding Date}" IsEnabled  ="false" />
             <Button x:Name="updateButton" Text="Create/Update" Command="{Binding UpdateCommand}" />
             <Button x:Name="deleteButton" Text="Delete" Command="{Binding DeleteCommand}" />
             <Button x:Name="cancelButton" Text="Cancel" Command="{Binding CancelCommand}" />

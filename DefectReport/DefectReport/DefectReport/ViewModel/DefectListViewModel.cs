@@ -44,10 +44,7 @@ namespace DefectReport
                     OnPropertyChanged(nameof(Id));
                 }
             }
-            get
-            {
-                return Id;
-            }
+            get => _id;
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -72,14 +69,11 @@ namespace DefectReport
         public DefectListViewModel(INavigation _navigation)
         {
             navigation = _navigation;
-            DefectReportList = new ObservableCollection<DefectReportItem>();
-            GetDefectReports();
         }
 
-        private async Task GetDefectReports()
+        async public Task PopulateCollection()
         {
-            ((App)App.Current).ResumeAtDefectReportId = -1;
-            Extensions.AddRange(DefectReportList,(await App.Database.GetItemsAsync()));
+            DefectReportList = new ObservableCollection<DefectReportItem>(await App.Database.GetItemsAsync());
         }
     }
 }

@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using Xamarin.Forms;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace DefectReport
 {
@@ -12,47 +14,11 @@ namespace DefectReport
         //Navigation
         private INavigation navigation;
 
-        //Need an ICommand to implement Commanding
-        public interface ICommand
-        {
-            void Execute(object arg);
-            bool CanExecute(object arg);
-            event EventHandler CanExecuteChanged;
-        }
-
         //Commands
-        public Command NavigateHistoryCommand
-        {
-            get
-            {
-                return new Command(async () =>
-                {
-                    await navigation.PushAsync(new DefectListPage());
-                });
-            }
-        }
+        public ICommand NavigateHistoryCommand { get; private set; }
+        public ICommand NavigateEntryCommand { get; private set; }
 
-        public Command NavigateEntryCommand
-        {
-            get
-            {
-                return new Command(async () =>
-                {
-                    if (!string.IsNullOrWhiteSpace(EnteredWorkOrder) && EnteredWorkOrder.Length < 40)
-                    {
-                        WorkOrderItem = new DefectReportItem();
-                        WorkOrderItem.WorkOrderNumber = EnteredWorkOrder;
-
-                        await navigation.PushAsync(new DefectEntryPage(WorkOrderItem));
-                    }
-                });
-            }
-        }
-
-        //Work Order Information to pass to Defect Entry Page
-        public DefectReportItem WorkOrderItem { get; set; }
-
-        string _enteredWorkOrderNumber="123456789";  //Set Default Value
+        string _enteredWorkOrderNumber; 
         public string EnteredWorkOrder
         {
             set
@@ -66,17 +32,13 @@ namespace DefectReport
                     else
                     {
                         _enteredWorkOrderNumber = value;
-                        OnPropertyChanged(nameof(EnteredWorkOrder));
+                        OnPropertyChanged();
                     }
-                }
-                else
-                {
-                    value = _enteredWorkOrderNumber;
                 }
             }
             get
             {
-                return EnteredWorkOrder;
+                return _enteredWorkOrderNumber;
             }
         }
 
@@ -92,7 +54,19 @@ namespace DefectReport
         public MainViewModel(INavigation _navigation)
         {
             navigation = _navigation;
+
+            NavigateEntryCommand = new Command(async () => await DefectEntryTask());
+            NavigateHistoryCommand = new Command(async () => await navigation.PushAsync(new DefectListPage()));
         }
+
+        async Task DefectEntryTask()
+    {
+        DefectReportItem WorkOrderItem;
+        WorkOrderItem = new DefectReportItem();
+        WorkOrderItem.WorkOrderNumber = EnteredWorkOrder;
+
+            await navigation.PushAsync(new DefectEntryPage(WorkOrderItem));
+       }
     }
 }
 

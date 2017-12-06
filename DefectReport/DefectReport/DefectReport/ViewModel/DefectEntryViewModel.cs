@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using Xamarin.Forms;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace DefectReport
 {
@@ -12,65 +14,10 @@ namespace DefectReport
         //Navigation
         private INavigation navigation;
 
-        //Need an ICommand to implement Commanding
-        public interface ICommand
-        {
-            void Execute(object arg);
-            bool CanExecute(object arg);
-            event EventHandler CanExecuteChanged;
-        }
-
         //Commands
-        public Command UpdateCommand
-        {
-            get
-            {
-                return new Command(async () =>
-                {
-                    var newDefect = new DefectReportItem();
-                    newDefect.WorkOrderNumber = WorkOrderNumber;
-                    newDefect.Count = Count;
-                    newDefect.Defect = Defect;
-                    newDefect.Disposition = Disposition;
-                    newDefect.Date = Date;
-                    newDefect.Id = Id;
-
-                    //Add/Update Defect Item
-                    await App.Database.SaveItemAsync(newDefect);
-                    await navigation.PopAsync();
-                });
-            }
-        }
-
-        public Command DeleteCommand
-        {
-            get
-            {
-                return new Command(async () =>
-                {
-                    var oldDefect = new DefectReportItem();
-                    oldDefect.Id = Id;
-
-                    //Check that id is not zero
-                    if (oldDefect.Id != 0)
-                    {
-                        await App.Database.DeleteItemAsync(oldDefect);
-                    }
-                    await navigation.PopAsync();
-                });
-            }
-        }
-
-        public Command CancelCommand
-        {
-            get
-            {
-                return new Command(async () =>
-                {
-                    await navigation.PopAsync();
-                });
-            }
-        }
+        public ICommand UpdateCommand { get; private set; }
+        public ICommand DeleteCommand { get; private set; }
+        public ICommand CancelCommand { get; private set; }
 
         #region BindingData
 
@@ -91,7 +38,7 @@ namespace DefectReport
                     else
                     {
                         _count = value;
-                        OnPropertyChanged(nameof(Count));
+                        OnPropertyChanged();
                     }
                 }
                 else
@@ -99,10 +46,7 @@ namespace DefectReport
                     Count = _count;
                 }
             }
-            get
-            {
-                return Count;
-            }
+            get => _count;
         }
 
         string _defect;
@@ -119,14 +63,11 @@ namespace DefectReport
                     else
                     {
                         _defect = value;
-                        OnPropertyChanged(nameof(Defect));
+                        OnPropertyChanged();
                     }
                 }
             }
-            get
-            {
-                return Defect;
-            }
+            get => _defect;
         }
 
         string _disposition;
@@ -143,14 +84,11 @@ namespace DefectReport
                     else
                     {
                         _disposition = value;
-                        OnPropertyChanged(nameof(Disposition));
+                        OnPropertyChanged();
                     }
                 }
             }
-            get
-            {
-                return Disposition;
-            }
+            get => _disposition;
         }
 
         DateTime _date = DateTime.Now;
@@ -167,7 +105,7 @@ namespace DefectReport
                     else
                     {
                         _date = value;
-                        OnPropertyChanged(nameof(Date));
+                        OnPropertyChanged();
                     }
                 }
                 else
@@ -175,10 +113,7 @@ namespace DefectReport
                     Date = _date;
                 }
             }
-            get
-            {
-                return Date;
-            }
+            get => _date;
         }
 
         #endregion
@@ -196,6 +131,10 @@ namespace DefectReport
         {
             navigation = _navigation;
 
+            UpdateCommand = new Command(async () => await UpdateDBItemAsync());
+            DeleteCommand = new Command(async () => await DeleteDBItemAsync());
+            CancelCommand = new Command(async () => await navigation.PopAsync());
+
             //set passed model parameters
             WorkOrderNumber = newDefect.WorkOrderNumber;
             if (newDefect.Id!=0)
@@ -208,5 +147,34 @@ namespace DefectReport
             }
 
         }
+
+        //Tasks
+        async Task UpdateDBItemAsync()
+    {
+        var newDefect = new DefectReportItem();
+        newDefect.WorkOrderNumber = WorkOrderNumber;
+        newDefect.Count = Count;
+        newDefect.Defect = Defect;
+        newDefect.Disposition = Disposition;
+        newDefect.Date = Date;
+        newDefect.Id = Id;
+
+        await App.Database.SaveItemAsync(newDefect);
+            await navigation.PopAsync();
+        }
+
+        async Task DeleteDBItemAsync()
+    {
+        var oldDefect = new DefectReportItem();
+        oldDefect.Id = Id;
+
+        //Check that id is not zero
+        if (oldDefect.Id != 0)
+        {
+            await App.Database.DeleteItemAsync(oldDefect);
+        }
+        await navigation.PopAsync();
+    }
+
     }
 }

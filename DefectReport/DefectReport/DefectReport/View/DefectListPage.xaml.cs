@@ -15,16 +15,15 @@ namespace DefectReport
             this.BindingContext = viewModel;
         }
 
-        //protected override async void OnAppearing()
-        //{
-        //    base.OnAppearing();
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
 
-            // Reset the 'resume' id, since we just want to re-start here
-            //((App)App.Current).ResumeAtDefectReportId = -1;
-            //DefectHistory.ItemsSource = await App.Database.GetItemsAsync();
-        //}
-
-        //Should do this async//
+            if (viewModel != null)
+            {
+                 await viewModel.PopulateCollection();
+            }
+        }
 
         async void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)
         {

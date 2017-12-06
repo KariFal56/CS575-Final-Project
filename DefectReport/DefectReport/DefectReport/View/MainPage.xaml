@@ -17,7 +17,7 @@
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
             <Label Text="Enter a work order:" />
-            <Entry Text="{Binding EnteredWorkOrder, Mode=TwoWay}" Keyboard = "Default" />
+            <Entry Text="{Binding EnteredWorkOrder}" Keyboard = "Default" />
             <Button x:Name="goButton" Text="Enter Defect" Command="{Binding NavigateEntryCommand}" />
             <Button x:Name="goHistoryButton" Text="Go To History" Command="{Binding NavigateHistoryCommand}" />
         </StackLayout>

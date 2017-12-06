@@ -5,14 +5,14 @@
              x:Class="DefectReport.DefectEntryPage">
 
     <ContentPage.Padding>
-            <OnPlatform x:TypeArguments="Thickness">
-                <On Platform="iOS" Value="20, 40, 20, 20" />
-                <On Platform="Android, WinPhone, Windows" Value="20" />
-            </OnPlatform>
-        </ContentPage.Padding>
-    
-        <ContentPage.Content>
-            <StackLayout>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="20, 40, 20, 20" />
+            <On Platform="Android, WinPhone, Windows" Value="20" />
+        </OnPlatform>
+    </ContentPage.Padding>
+
+    <ContentPage.Content>
+        <StackLayout>
             <Label Text="Defect Information"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
@@ -25,7 +25,6 @@
             <Button x:Name="deleteButton" Text="Delete" Command="{Binding DeleteCommand}" />
             <Button x:Name="cancelButton" Text="Cancel" Command="{Binding CancelCommand}" />
         </StackLayout>
-        
     </ContentPage.Content>
     
 </ContentPage>

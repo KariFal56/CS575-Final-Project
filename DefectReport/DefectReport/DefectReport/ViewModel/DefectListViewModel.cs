@@ -20,6 +20,7 @@ namespace DefectReport
             set
             {
                 if (Equals(value, _defectReportList)) return;
+
                 _defectReportList = value;
                 OnPropertyChanged();
             }

@@ -21,8 +21,8 @@ namespace DefectReport
 
         #region BindingData
 
-        public int Id { set; get; }  //This will not be changed here
-        public string WorkOrderNumber { set; get; }  //ReadyOnly, can't be changed here
+        public int Id { set; get; }  //Can't be changed on this page
+        public string WorkOrderNumber { set; get; }  //Can't be changed on this page
 
         int _count = 1;
         public int Count
@@ -150,31 +150,37 @@ namespace DefectReport
 
         //Tasks
         async Task UpdateDBItemAsync()
-    {
-        var newDefect = new DefectReportItem();
-        newDefect.WorkOrderNumber = WorkOrderNumber;
-        newDefect.Count = Count;
-        newDefect.Defect = Defect;
-        newDefect.Disposition = Disposition;
-        newDefect.Date = Date;
-        newDefect.Id = Id;
+        {
+            var newDefect = new DefectReportItem()
+            {
+                WorkOrderNumber =WorkOrderNumber,
+                Count = Count,
+                Defect = Defect,
+                Disposition = Disposition,
+                Date = Date,
+                Id = Id
+            };
 
-        await App.Database.SaveItemAsync(newDefect);
+            await App.Database.SaveItemAsync(newDefect);
             await navigation.PopAsync();
         }
 
         async Task DeleteDBItemAsync()
     {
-        var oldDefect = new DefectReportItem();
-        oldDefect.Id = Id;
+        var oldDefect = new DefectReportItem()
+        {
+            Id = Id
+        };
 
         //Check that id is not zero
         if (oldDefect.Id != 0)
         {
             await App.Database.DeleteItemAsync(oldDefect);
         }
+
         await navigation.PopAsync();
-    }
+
+        }
 
     }
 }

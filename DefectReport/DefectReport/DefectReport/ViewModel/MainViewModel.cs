@@ -32,14 +32,11 @@ namespace DefectReport
                     else
                     {
                         _enteredWorkOrderNumber = value;
-                        OnPropertyChanged();
+                        OnPropertyChanged(); //don't need to pass property name here
                     }
                 }
             }
-            get
-            {
-                return _enteredWorkOrderNumber;
-            }
+            get => _enteredWorkOrderNumber;
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -60,13 +57,16 @@ namespace DefectReport
         }
 
         async Task DefectEntryTask()
-    {
-        DefectReportItem WorkOrderItem;
-        WorkOrderItem = new DefectReportItem();
-        WorkOrderItem.WorkOrderNumber = EnteredWorkOrder;
+        {
+            DefectReportItem WorkOrderItem;
+
+            WorkOrderItem = new DefectReportItem()
+            {
+                WorkOrderNumber = EnteredWorkOrder
+            };
 
             await navigation.PushAsync(new DefectEntryPage(WorkOrderItem));
-       }
+        }
     }
 }
 

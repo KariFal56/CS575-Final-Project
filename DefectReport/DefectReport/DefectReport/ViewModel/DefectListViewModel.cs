@@ -21,31 +21,12 @@ namespace DefectReport
             {
                 if (Equals(value, _defectReportList)) return;
                 _defectReportList = value;
-                OnPropertyChanged(nameof(DefectReportList));
+                OnPropertyChanged();
             }
         }
 
         //Navigation
         private INavigation navigation;
-
-        //Binding Data
-        int _id;
-        public int Id
-        {
-            set
-            {
-                if (value.Equals(_id))
-                {
-                    return;
-                }
-                else
-                {
-                    _id = value;
-                    OnPropertyChanged(nameof(Id));
-                }
-            }
-            get => _id;
-        }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -56,7 +37,7 @@ namespace DefectReport
             }
         }
 
-        public async void ViewDefect(SelectedItemChangedEventArgs e)
+        public async Task ViewDefect(SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem != null)
             {

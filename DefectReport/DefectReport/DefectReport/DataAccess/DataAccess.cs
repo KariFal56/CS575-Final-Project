@@ -25,11 +25,6 @@ namespace DefectReport
             return database.Table<DefectReportItem>().ToListAsync();
         }
 
-        public Task<List<DefectReportItem>> GetItemsNotDoneAsync()
-        {
-            return database.QueryAsync<DefectReportItem>("SELECT * FROM [DefectReportItem]");
-        }
-
         #endregion
 
         #region Get Defect List

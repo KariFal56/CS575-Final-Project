@@ -27,12 +27,9 @@ namespace DefectReport
 
         async void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            //viewModel.ViewDefect(e);
-            if (e.SelectedItem != null)
+            if (viewModel != null)
             {
-                DefectReportItem selectedDefect = new DefectReportItem();
-                selectedDefect = e.SelectedItem as DefectReportItem;
-                await Navigation.PushAsync(new DefectEntryPage(selectedDefect));
+                await viewModel.ViewDefect(e);
             }
         }
     }
